@@ -41,7 +41,7 @@ class MultiUSRP(lib.usrp.multi_usrp):
                        freq,
                        rate=1e6,
                        channels=(0,),
-                       gain=10,
+                       gain=[10,10],
                        start_time=None,
                        streamer=None):
         """
@@ -99,7 +99,8 @@ class MultiUSRP(lib.usrp.multi_usrp):
         for chan in channels:
             super(MultiUSRP, self).set_rx_rate(rate, chan)
             super(MultiUSRP, self).set_rx_freq(lib.types.tune_request(freq), chan)
-            super(MultiUSRP, self).set_rx_gain(gain, chan)
+            super(MultiUSRP, self).set_rx_gain(gain[chan], chan)
+            super(MultiUSRP, self).set_rx_agc(True, chan)
         # Configure streamer
         streamer = _config_streamer(streamer)
         metadata = lib.types.rx_metadata()
